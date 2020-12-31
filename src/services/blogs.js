@@ -20,8 +20,10 @@ const createBlog = (newBlog) => {
   return request.then(response => response.data)
 }
 
-export default {
+const blogService = {
   setToken,
   getAll,
   createBlog
 }
+
+export default blogService

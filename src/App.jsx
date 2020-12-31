@@ -5,13 +5,13 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Toggable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState(null)
   const blogFormRef = useRef()
@@ -70,12 +70,10 @@ const App = () => {
     blogService.setToken(null)
   }
 
-  const handleCreateBlog = (event) => {
-    event.preventDefault();
+  const createBlog = (newBlog) => {
     blogFormRef.current.setVisible(false)
     blogService.createBlog(newBlog)
       .then(savedBlog => {
-        setNewBlog({ title: '', author: '', url: '' })
         setBlogs(blogs.concat(savedBlog))
         notice.success(`a new blog ${savedBlog.title} by ${savedBlog.author} added!`)
       })
@@ -116,22 +114,7 @@ const App = () => {
       </div>
       <Notification message={message} messageType={messageType} />
       <Toggable buttonLabel="create note" ref={blogFormRef}>
-        <form onSubmit={handleCreateBlog}>
-          <h2>create new</h2>
-          <div>
-            <label htmlFor="title">title</label>
-            <input type="text" id="title" name="title" value={newBlog.title} onChange={e => setNewBlog({ ...newBlog, title: e.target.value })} />
-          </div>
-          <div>
-            <label htmlFor="author">author</label>
-            <input type="text" id="author" name="author" value={newBlog.author} onChange={e => setNewBlog({ ...newBlog, author: e.target.value })} />
-          </div>
-          <div>
-            <label htmlFor="url">url</label>
-            <input type="text" id="url" name="url" value={newBlog.url} onChange={e => setNewBlog({ ...newBlog, url: e.target.value })} />
-          </div>
-          <button type="submit">create</button>
-        </form>
+        <BlogForm createBlog={createBlog} />
       </Toggable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
