@@ -94,6 +94,23 @@ const App = () => {
       })
   }
 
+  const deleteBlog = (toDeleteBlog) => {
+    const confirm = window.confirm(`Delete blog [${toDeleteBlog.title}] by ${toDeleteBlog.author}?`)
+    if (!confirm) return
+    blogService.deleteBlog(toDeleteBlog.id)
+      .then(() => {
+        const newBlogs = blogs.slice()
+        const index = blogs.findIndex(blog => blog.id === toDeleteBlog.id)
+        newBlogs.splice(index, 1)
+        setBlogs(newBlogs)
+        notice.success(`Delete blog ${toDeleteBlog.title} by ${toDeleteBlog.author}`)
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        notice.error(error.response.data)
+      })
+  }
+
   if (user === null) {
     return (
       <div>
@@ -128,7 +145,7 @@ const App = () => {
         <BlogForm createBlog={createBlog} />
       </Toggable>
       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+        <Blog key={blog.id} username={username} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
       )}
     </div>
   )
