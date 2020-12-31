@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import './App.css'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -9,6 +11,27 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  const [message, setMessage] = useState(null)
+  const [messageType, setMessageType] = useState(null)
+
+  const notice = {
+    error: (message, duration = 5000) => {
+      setMessage(JSON.stringify(message))
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+        setMessageType(null)
+      }, duration)
+    },
+    success: (message, duration = 5000) => {
+      setMessage(JSON.stringify(message))
+      setMessageType('success')
+      setTimeout(() => {
+        setMessage(null)
+        setMessageType(null)
+      }, duration)
+    },
+  }
 
   useEffect(() => {
     const userString = localStorage.getItem('user')
@@ -34,7 +57,8 @@ const App = () => {
         blogService.setToken(user.token)
       })
       .catch(error => {
-        console.log(error.response.data.error)
+        console.log(error.response.data)
+        notice.error(error.response.data)
       })
   }
 
@@ -50,9 +74,11 @@ const App = () => {
       .then(savedBlog => {
         setNewBlog({ title: '', author: '', url: '' })
         setBlogs(blogs.concat(savedBlog))
+        notice.success(`a new blog ${savedBlog.title} by ${savedBlog.author} added!`)
       })
       .catch(error => {
         console.log(error.response.data)
+        notice.error(error.response.data)
       })
   }
 
@@ -60,6 +86,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={message} messageType={messageType} />
         <form onSubmit={handleLogin}>
           <div>
             <label htmlFor="username">username</label>
@@ -83,6 +110,7 @@ const App = () => {
         hello, {user.name}
         <button onClick={handleLogout}>log out</button>
       </div>
+      <Notification message={message} messageType={messageType} />
       <form onSubmit={handleCreateBlog}>
         <div>
           <label htmlFor="title">title</label>
