@@ -83,6 +83,17 @@ const App = () => {
       })
   }
 
+  const updateBlog = (newBlog) => {
+    blogService.updateBlog(newBlog)
+      .then(savedBlog => {
+        setBlogs(blogs.map(blog => blog.id === newBlog.id ? savedBlog : blog))
+      })
+      .catch(error => {
+        console.log(error)
+        notice.error(error.response.data)
+      })
+  }
+
   if (user === null) {
     return (
       <div>
@@ -117,7 +128,7 @@ const App = () => {
         <BlogForm createBlog={createBlog} />
       </Toggable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
       )}
     </div>
   )
