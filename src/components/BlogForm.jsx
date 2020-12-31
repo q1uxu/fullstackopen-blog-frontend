@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 const BlogForm = props => {
-  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' });
 
   const createBlog = event => {
     event.preventDefault();
     props.createBlog(newBlog);
-    setNewBlog({ title: '', author: '', url: '' })
-  }
+    setNewBlog({ title: '', author: '', url: '' });
+  };
 
   return (
     <form onSubmit={createBlog}>
@@ -26,7 +26,7 @@ const BlogForm = props => {
       </div>
       <button type="submit">create</button>
     </form>
-  )
-}
+  );
+};
 
-export default BlogForm
+export default BlogForm;

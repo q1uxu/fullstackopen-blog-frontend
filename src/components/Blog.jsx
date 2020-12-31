@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 const Blog = ({ username, blog, updateBlog, deleteBlog }) => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
-  }
+    marginBottom: 5,
+  };
 
-  const handleLike = event => {
+  const handleLike = () => {
     const newBlog = {
       ...blog,
       user: blog.user.id,
       likes: blog.likes + 1,
-    }
-    updateBlog(newBlog)
-  }
+    };
+    updateBlog(newBlog);
+  };
 
   return (
     <div style={blogStyle}>
       <div>
         {blog.title}
-        <button onClick={e => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button>
+        <button onClick={() => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button>
       </div>
       { visible &&
         <>
@@ -37,7 +37,7 @@ const Blog = ({ username, blog, updateBlog, deleteBlog }) => {
         </>
       }
     </div>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;

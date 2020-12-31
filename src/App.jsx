@@ -1,115 +1,115 @@
-import React, { useState, useEffect, useRef } from 'react'
-import './App.css'
-import Blog from './components/Blog'
-import Notification from './components/Notification'
-import blogService from './services/blogs'
-import loginService from './services/login'
-import Toggable from './components/Togglable'
-import BlogForm from './components/BlogForm'
+import React, { useState, useEffect, useRef } from 'react';
+import './App.css';
+import Blog from './components/Blog';
+import Notification from './components/Notification';
+import blogService from './services/blogs';
+import loginService from './services/login';
+import Toggable from './components/Togglable';
+import BlogForm from './components/BlogForm';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [messageType, setMessageType] = useState(null)
-  const blogFormRef = useRef()
+  const [blogs, setBlogs] = useState([]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
+  const blogFormRef = useRef();
 
   const notice = {
     error: (message, duration = 5000) => {
-      setMessage(JSON.stringify(message))
-      setMessageType('error')
+      setMessage(JSON.stringify(message));
+      setMessageType('error');
       setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, duration)
+        setMessage(null);
+        setMessageType(null);
+      }, duration);
     },
     success: (message, duration = 5000) => {
-      setMessage(JSON.stringify(message))
-      setMessageType('success')
+      setMessage(JSON.stringify(message));
+      setMessageType('success');
       setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
-      }, duration)
+        setMessage(null);
+        setMessageType(null);
+      }, duration);
     },
-  }
+  };
 
   useEffect(() => {
-    const userString = localStorage.getItem('user')
+    const userString = localStorage.getItem('user');
     if (userString) {
-      const user = JSON.parse(userString)
-      setUser(user)
-      blogService.setToken(user.token)
+      const user = JSON.parse(userString);
+      setUser(user);
+      blogService.setToken(user.token);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
+      setBlogs(blogs),
+    );
+  }, []);
 
   const handleLogin = (event) => {
     event.preventDefault();
     loginService.login({ username, password })
       .then(user => {
-        setUser(user)
-        localStorage.setItem('user', JSON.stringify(user))
-        blogService.setToken(user.token)
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        blogService.setToken(user.token);
       })
       .catch(error => {
-        console.log(error.response.data)
-        notice.error(error.response.data)
-      })
-  }
+        console.log(error.response.data);
+        notice.error(error.response.data);
+      });
+  };
 
-  const handleLogout = (event) => {
-    setUser(null)
-    localStorage.removeItem('user')
-    blogService.setToken(null)
-  }
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    blogService.setToken(null);
+  };
 
   const createBlog = (newBlog) => {
-    blogFormRef.current.setVisible(false)
+    blogFormRef.current.setVisible(false);
     blogService.createBlog(newBlog)
       .then(savedBlog => {
-        setBlogs(blogs.concat(savedBlog))
-        notice.success(`a new blog ${savedBlog.title} by ${savedBlog.author} added!`)
+        setBlogs(blogs.concat(savedBlog));
+        notice.success(`a new blog ${savedBlog.title} by ${savedBlog.author} added!`);
       })
       .catch(error => {
-        console.log(error.response.data)
-        notice.error(error.response.data)
-      })
-  }
+        console.log(error.response.data);
+        notice.error(error.response.data);
+      });
+  };
 
   const updateBlog = (newBlog) => {
     blogService.updateBlog(newBlog)
       .then(savedBlog => {
-        setBlogs(blogs.map(blog => blog.id === newBlog.id ? savedBlog : blog))
+        setBlogs(blogs.map(blog => blog.id === newBlog.id ? savedBlog : blog));
       })
       .catch(error => {
-        console.log(error)
-        notice.error(error.response.data)
-      })
-  }
+        console.log(error);
+        notice.error(error.response.data);
+      });
+  };
 
   const deleteBlog = (toDeleteBlog) => {
-    const confirm = window.confirm(`Delete blog [${toDeleteBlog.title}] by ${toDeleteBlog.author}?`)
-    if (!confirm) return
+    const confirm = window.confirm(`Delete blog [${toDeleteBlog.title}] by ${toDeleteBlog.author}?`);
+    if (!confirm) return;
     blogService.deleteBlog(toDeleteBlog.id)
       .then(() => {
-        const newBlogs = blogs.slice()
-        const index = blogs.findIndex(blog => blog.id === toDeleteBlog.id)
-        newBlogs.splice(index, 1)
-        setBlogs(newBlogs)
-        notice.success(`Delete blog ${toDeleteBlog.title} by ${toDeleteBlog.author}`)
+        const newBlogs = blogs.slice();
+        const index = blogs.findIndex(blog => blog.id === toDeleteBlog.id);
+        newBlogs.splice(index, 1);
+        setBlogs(newBlogs);
+        notice.success(`Delete blog ${toDeleteBlog.title} by ${toDeleteBlog.author}`);
       })
       .catch(error => {
-        console.log(error.response.data)
-        notice.error(error.response.data)
-      })
-  }
+        console.log(error.response.data);
+        notice.error(error.response.data);
+      });
+  };
 
   if (user === null) {
     return (
@@ -130,7 +130,7 @@ const App = () => {
           </div>
         </form>
       </div>
-    )
+    );
   }
 
   return (
@@ -145,10 +145,10 @@ const App = () => {
         <BlogForm createBlog={createBlog} />
       </Toggable>
       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} username={username} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
+        <Blog key={blog.id} username={username} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />,
       )}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
