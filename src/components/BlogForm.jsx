@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createBlog } from '../store/reducer/blogsReducer';
 
-const BlogForm = props => {
+const BlogForm = () => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' });
+  const dispatch = useDispatch();
 
-  const createBlog = event => {
+  const handleFormSubmit = event => {
     event.preventDefault();
-    props.createBlog(newBlog);
+    dispatch(createBlog(newBlog));
     setNewBlog({ title: '', author: '', url: '' });
   };
 
   return (
-    <form onSubmit={createBlog}>
+    <form onSubmit={handleFormSubmit}>
       <h2>create new</h2>
       <div>
         <label htmlFor="title">title</label>

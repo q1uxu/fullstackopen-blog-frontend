@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { notify } from './store/reducer/notificationReducer';
+import { getBlogs } from './store/reducer/blogsReducer';
 import './App.css';
 import Blog from './components/Blog';
 import Notification from './components/Notification';
@@ -10,13 +11,14 @@ import Toggable from './components/Togglable';
 import BlogForm from './components/BlogForm';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const [, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const blogFormRef = useRef();
 
   const dispatch = useDispatch();
+  const blogs = useSelector(state => state.blogs);
 
   useEffect(() => {
     const userString = localStorage.getItem('user');
@@ -32,9 +34,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs),
-    );
+    dispatch(getBlogs());
   }, []);
 
   const handleLogin = (event) => {
@@ -58,24 +58,6 @@ const App = () => {
     setUser(null);
     localStorage.removeItem('user');
     blogService.setToken(null);
-  };
-
-  const createBlog = (newBlog) => {
-    blogFormRef.current.setVisible(false);
-    blogService.createBlog(newBlog)
-      .then(savedBlog => {
-        setBlogs(blogs.concat(savedBlog));
-        dispatch(notify({
-          message: `a new blog ${savedBlog.title} by ${savedBlog.author} added!`,
-        }));
-      })
-      .catch(error => {
-        console.log(error.response.data);
-        dispatch(notify({
-          message: error.response.data,
-          type: 'error',
-        }));
-      });
   };
 
   const updateBlog = (newBlog) => {
@@ -145,7 +127,7 @@ const App = () => {
       </div>
       <Notification/>
       <Toggable buttonLabel="create note" ref={blogFormRef}>
-        <BlogForm createBlog={createBlog} />
+        <BlogForm/>
       </Toggable>
       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} username={username} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />,
