@@ -60,20 +60,6 @@ const App = () => {
     blogService.setToken(null);
   };
 
-  const updateBlog = (newBlog) => {
-    blogService.updateBlog(newBlog)
-      .then(savedBlog => {
-        setBlogs(blogs.map(blog => blog.id === newBlog.id ? savedBlog : blog));
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch(notify({
-          message: error.response.data,
-          type: 'error',
-        }));
-      });
-  };
-
   const deleteBlog = (toDeleteBlog) => {
     const confirm = window.confirm(`Delete blog [${toDeleteBlog.title}] by ${toDeleteBlog.author}?`);
     if (!confirm) return;
@@ -130,7 +116,7 @@ const App = () => {
         <BlogForm/>
       </Toggable>
       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} username={username} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />,
+        <Blog key={blog.id} username={username} blog={blog} deleteBlog={deleteBlog} />,
       )}
     </div>
   );
