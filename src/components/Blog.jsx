@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateBlog } from '../store/reducer/blogsReducer';
+import { updateBlog, deleteBlog } from '../store/reducer/blogsReducer';
 
-const Blog = ({ username, blog, deleteBlog }) => {
+const Blog = ({ username, blog }) => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
 
@@ -23,6 +23,12 @@ const Blog = ({ username, blog, deleteBlog }) => {
     dispatch(updateBlog(blogToUpdate));
   };
 
+  const handleDelete = (blogToDelete) => {
+    const confirm = window.confirm(`Delete blog [${blogToDelete.title}] by ${blogToDelete.author}?`);
+    if (!confirm) return;
+    dispatch(deleteBlog(blogToDelete));
+  };
+
   return (
     <div style={blogStyle}>
       <div>
@@ -37,7 +43,7 @@ const Blog = ({ username, blog, deleteBlog }) => {
             <button onClick={handleLike}>like</button>
           </div>
           <div>{blog.author}</div>
-          { blog.user.username === username && <button onClick={() => deleteBlog(blog)}>delete</button>}
+          { blog.user.username === username && <button onClick={() => handleDelete(blog)}>delete</button>}
         </>
       }
     </div>

@@ -11,7 +11,6 @@ import Toggable from './components/Togglable';
 import BlogForm from './components/BlogForm';
 
 const App = () => {
-  const [, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
@@ -60,28 +59,6 @@ const App = () => {
     blogService.setToken(null);
   };
 
-  const deleteBlog = (toDeleteBlog) => {
-    const confirm = window.confirm(`Delete blog [${toDeleteBlog.title}] by ${toDeleteBlog.author}?`);
-    if (!confirm) return;
-    blogService.deleteBlog(toDeleteBlog.id)
-      .then(() => {
-        const newBlogs = blogs.slice();
-        const index = blogs.findIndex(blog => blog.id === toDeleteBlog.id);
-        newBlogs.splice(index, 1);
-        setBlogs(newBlogs);
-        dispatch(notify({
-          message: `Delete blog ${toDeleteBlog.title} by ${toDeleteBlog.author}`,
-        }));
-      })
-      .catch(error => {
-        console.log(error.response.data);
-        dispatch(notify({
-          message: error.response.data,
-          type: 'error',
-        }));
-      });
-  };
-
   if (user === null) {
     return (
       <div>
@@ -116,7 +93,7 @@ const App = () => {
         <BlogForm/>
       </Toggable>
       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} username={username} blog={blog} deleteBlog={deleteBlog} />,
+        <Blog key={blog.id} username={user.username} blog={blog} />,
       )}
     </div>
   );

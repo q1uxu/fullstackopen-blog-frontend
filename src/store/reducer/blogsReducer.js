@@ -10,8 +10,8 @@ const blogsReducer = (state = [], action) => {
       return state.concat(payload);
     case 'UPDATE_BLOG':
       return state.map(blog => blog.id === payload.id ? payload : blog);
-    // case 'DELETE_BLOG':
-      // return state.
+    case 'DELETE_BLOG':
+      return state.filter(blog => blog.id !== payload.id);
     default: return state;
   }
 };
@@ -57,6 +57,26 @@ export const updateBlog = (blogToUpdate) => dispatch => {
     })
     .catch(error => {
       console.log(error);
+      dispatch(notify({
+        message: error.response.data,
+        type: 'error',
+      }));
+    });
+};
+
+export const deleteBlog = (blogToDelete) => dispatch => {
+  blogService.deleteBlog(blogToDelete.id)
+    .then(() => {
+      dispatch({
+        type: 'DELETE_BLOG',
+        payload: blogToDelete,
+      });
+      dispatch(notify({
+        message: `Delete blog ${blogToDelete.title} by ${blogToDelete.author}`,
+      }));
+    })
+    .catch(error => {
+      console.log(error.response.data);
       dispatch(notify({
         message: error.response.data,
         type: 'error',
