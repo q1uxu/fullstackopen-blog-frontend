@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { notify } from './store/reducer/notificationReducer';
 import './App.css';
 import Blog from './components/Blog';
 import Notification from './components/Notification';
@@ -12,28 +14,9 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(null);
   const blogFormRef = useRef();
 
-  const notice = {
-    error: (message, duration = 5000) => {
-      setMessage(JSON.stringify(message));
-      setMessageType('error');
-      setTimeout(() => {
-        setMessage(null);
-        setMessageType(null);
-      }, duration);
-    },
-    success: (message, duration = 5000) => {
-      setMessage(JSON.stringify(message));
-      setMessageType('success');
-      setTimeout(() => {
-        setMessage(null);
-        setMessageType(null);
-      }, duration);
-    },
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const userString = localStorage.getItem('user');
@@ -41,6 +24,10 @@ const App = () => {
       const user = JSON.parse(userString);
       setUser(user);
       blogService.setToken(user.token);
+      dispatch(notify({
+        message: `welcome back, ${user.name}`,
+        duration: 5000,
+      }));
     }
   }, []);
 
@@ -60,7 +47,10 @@ const App = () => {
       })
       .catch(error => {
         console.log(error.response.data);
-        notice.error(error.response.data);
+        dispatch(notify({
+          message: error.response.data,
+          type: 'error',
+        }));
       });
   };
 
@@ -75,11 +65,16 @@ const App = () => {
     blogService.createBlog(newBlog)
       .then(savedBlog => {
         setBlogs(blogs.concat(savedBlog));
-        notice.success(`a new blog ${savedBlog.title} by ${savedBlog.author} added!`);
+        dispatch(notify({
+          message: `a new blog ${savedBlog.title} by ${savedBlog.author} added!`,
+        }));
       })
       .catch(error => {
         console.log(error.response.data);
-        notice.error(error.response.data);
+        dispatch(notify({
+          message: error.response.data,
+          type: 'error',
+        }));
       });
   };
 
@@ -90,7 +85,10 @@ const App = () => {
       })
       .catch(error => {
         console.log(error);
-        notice.error(error.response.data);
+        dispatch(notify({
+          message: error.response.data,
+          type: 'error',
+        }));
       });
   };
 
@@ -103,11 +101,16 @@ const App = () => {
         const index = blogs.findIndex(blog => blog.id === toDeleteBlog.id);
         newBlogs.splice(index, 1);
         setBlogs(newBlogs);
-        notice.success(`Delete blog ${toDeleteBlog.title} by ${toDeleteBlog.author}`);
+        dispatch(notify({
+          message: `Delete blog ${toDeleteBlog.title} by ${toDeleteBlog.author}`,
+        }));
       })
       .catch(error => {
         console.log(error.response.data);
-        notice.error(error.response.data);
+        dispatch(notify({
+          message: error.response.data,
+          type: 'error',
+        }));
       });
   };
 
@@ -115,7 +118,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification message={message} messageType={messageType} />
+        <Notification/>
         <form onSubmit={handleLogin}>
           <div>
             <label htmlFor="username">username</label>
@@ -140,7 +143,7 @@ const App = () => {
         hello, {user.name}
         <button onClick={handleLogout}>log out</button>
       </div>
-      <Notification message={message} messageType={messageType} />
+      <Notification/>
       <Toggable buttonLabel="create note" ref={blogFormRef}>
         <BlogForm createBlog={createBlog} />
       </Toggable>
