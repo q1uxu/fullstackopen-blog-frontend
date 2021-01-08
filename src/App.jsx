@@ -10,7 +10,7 @@ import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 
 const App = () => {
-  const blogFormRef = useRef();
+  const togglableRef = useRef();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const blogs = useSelector(state => state.blogs);
@@ -45,8 +45,8 @@ const App = () => {
         <button onClick={handleLogout}>log out</button>
       </div>
       <Notification/>
-      <Toggable buttonLabel="create note" ref={blogFormRef}>
-        <BlogForm/>
+      <Toggable buttonLabel="create note" ref={togglableRef}>
+        <BlogForm togglableRef={togglableRef}/>
       </Toggable>
       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} />,

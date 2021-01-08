@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBlog } from '../store/reducer/blogsReducer';
 
-const BlogForm = () => {
+const BlogForm = (props) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' });
   const dispatch = useDispatch();
 
@@ -10,6 +10,7 @@ const BlogForm = () => {
     event.preventDefault();
     dispatch(createBlog(newBlog));
     setNewBlog({ title: '', author: '', url: '' });
+    props.togglableRef.current.setVisible(false);
   };
 
   return (
