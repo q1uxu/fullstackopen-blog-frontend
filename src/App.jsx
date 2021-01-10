@@ -34,9 +34,9 @@ const App = () => {
   const togglableRef = useRef();
 
   return (
-    <>
-      <Link to="/blogs">blogs</Link>
-      <Link to="/users">users</Link>
+    <div className="container">
+      <Link to="/blogs" className="menu-link">blogs</Link>
+      <Link to="/users" className="menu-link">users</Link>
       <h1>blogs app</h1>
       <Login />
       <Notification />
@@ -59,7 +59,7 @@ const App = () => {
           </Route>
         </Switch>
       </UsersContext.Provider>
-    </>
+    </div>
   );
 };
 
