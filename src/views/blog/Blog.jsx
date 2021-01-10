@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
-import { updateBlog, deleteBlog } from '../../store/reducer/blogsReducer';
+import { updateBlog, deleteBlog, submitComment } from '../../store/reducer/blogsReducer';
 
 const Blog = () => {
+  const [newComment, setNewComment] = useState('');
   const dispatch = useDispatch();
   const match = useRouteMatch('/blogs/:id');
   const blogId = match.params.id;
@@ -26,6 +27,12 @@ const Blog = () => {
     dispatch(deleteBlog(blogToDelete));
   };
 
+  const handleSubmitComment = (event) => {
+    event.preventDefault();
+    dispatch(submitComment(blogId, newComment));
+    setNewComment('');
+  };
+
   return (
     <div>
       <h2>{blog.title}</h2>
@@ -38,6 +45,10 @@ const Blog = () => {
       <div>add By {blog.user.name} </div>
       { user && blog.user.username === user.username && <button onClick={() => handleDelete(blog)}>delete</button>}
       <h2>comments</h2>
+      <form onSubmit={event => handleSubmitComment(event)}>
+        <input type="text" name="comment" value={newComment} onChange={event => setNewComment(event.target.value) }/>
+        <button type="submit">submit comment</button>
+      </form>
       <ul>
         {blog.comments.map((comment, index) => <li key={index}>{ comment}</li>)}
       </ul>

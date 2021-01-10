@@ -38,12 +38,18 @@ const deleteBlog = (id) => {
   return request.then(response => response.data);
 };
 
+const submitComment = (id, comment) => {
+  const request = axios.post(`${baseUrl}/${id}/comments`, { comment });
+  return request.then(response => response.data);
+};
+
 const blogService = {
   setToken,
   getAll,
   createBlog,
   updateBlog,
   deleteBlog,
+  submitComment,
 };
 
 export default blogService;

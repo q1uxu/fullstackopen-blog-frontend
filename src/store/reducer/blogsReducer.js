@@ -83,3 +83,12 @@ export const deleteBlog = (blogToDelete) => dispatch => {
       }));
     });
 };
+
+export const submitComment = (blogId, comment) => dispatch => {
+  blogService.submitComment(blogId, comment).then(commentedBlog => {
+    dispatch({
+      type: 'UPDATE_BLOG',
+      payload: commentedBlog,
+    });
+  });
+};
