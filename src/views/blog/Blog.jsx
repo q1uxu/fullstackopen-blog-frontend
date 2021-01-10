@@ -9,7 +9,7 @@ const Blog = () => {
   const blogId = match.params.id;
   const blog = useSelector(state => state.blogs.find(blog => blog.id === blogId));
   const user = useSelector(state => state.user);
-  if(!user || !blog) return null;
+  if(!blog) return null;
 
   const handleLike = () => {
     const blogToUpdate = {
@@ -36,7 +36,7 @@ const Blog = () => {
       </div>
       <div>author: {blog.author}</div>
       <div>add By {blog.user.name} </div>
-      { blog.user.username === user.username && <button onClick={() => handleDelete(blog)}>delete</button>}
+      { user && blog.user.username === user.username && <button onClick={() => handleDelete(blog)}>delete</button>}
     </div>
   );
 };

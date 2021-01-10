@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Link, Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Notification from './components/Notification';
 import Users from './views/user/Users';
@@ -27,6 +27,8 @@ const App = () => {
 
   return (
     <>
+      <Link to="/blogs">blogs</Link>
+      <Link to="/users">users</Link>
       <h1>blogs app</h1>
       <Login />
       <Notification />
