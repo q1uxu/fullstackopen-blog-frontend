@@ -6,8 +6,14 @@ const getAll = () => {
   return request.then(response => response.data);
 };
 
+const getUser = (id) => {
+  const request = axios.get(`${baseUrl}/${id}`);
+  return request.then(response => response.data);
+};
+
 const usersService = {
   getAll,
+  getUser,
 };
 
 export default usersService;

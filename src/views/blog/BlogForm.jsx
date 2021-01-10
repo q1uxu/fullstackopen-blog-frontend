@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createBlog } from '../store/reducer/blogsReducer';
+import { createBlog } from '../../store/reducer/blogsReducer';
 
 const BlogForm = (props) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' });

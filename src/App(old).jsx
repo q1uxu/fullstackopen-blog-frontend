@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBlogs } from './store/reducer/blogsReducer';
 import { getLocalUser, logout } from './store/reducer/userReducer';
 import './App.css';
-import Blog from './components/Blog';
+import Blog from './views/blog/Blog';
 import Notification from './components/Notification';
 import Toggable from './components/Togglable';
 import BlogForm from './components/BlogForm';
