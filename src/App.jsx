@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Notification from './components/Notification';
 import Users from './views/user/Users';
 import User from './views/user/User';
+import Blog from './views/blog/Blog';
 import { getBlogs } from './store/reducer/blogsReducer';
 import './App.css';
 
@@ -25,6 +26,9 @@ const App = () => {
         </Route>
         <Route path="/users/:id" exact>
           <User />
+        </Route>
+        <Route path="/blogs/:id" exact>
+          <Blog />
         </Route>
       </Switch>
     </>
