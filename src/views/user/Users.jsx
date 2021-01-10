@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import usersService from '../../services/users';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UsersContext } from '../../App';
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    usersService.getAll().then(allUsers => {
-      setUsers(allUsers);
-    });
-  }, []);
+  const users = useContext(UsersContext);
 
   return (
     <>
@@ -17,15 +11,15 @@ const Users = () => {
       <table>
         <thead>
           <tr>
-            <td>username</td>
-            <td>blogs created</td>
+            <td>name</td>
+            <td>blogs added</td>
           </tr>
         </thead>
         {users.map(user => (
           <tbody key={user.id}>
             <tr>
               <td>
-                <Link to={`/users/${user.id}`}>{user.username}</Link>
+                <Link to={`/users/${user.id}`}>{user.name}</Link>
               </td>
               <td>{user.blogs.length}</td>
             </tr>
