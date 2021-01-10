@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
+import Toggable from './components/Togglable';
+import BlogForm from './views/blog/BlogForm';
 import Notification from './components/Notification';
 import Users from './views/user/Users';
 import User from './views/user/User';
+import Blogs from './views/blog/Blogs';
 import Blog from './views/blog/Blog';
 import { getBlogs } from './store/reducer/blogsReducer';
 import usersService from './services/users';
@@ -25,6 +28,11 @@ const App = () => {
     });
   }, []);
 
+  const blogs = useSelector(state => state.blogs);
+  const user = useSelector(state => state.user);
+
+  const togglableRef = useRef();
+
   return (
     <>
       <Link to="/blogs">blogs</Link>
@@ -32,6 +40,9 @@ const App = () => {
       <h1>blogs app</h1>
       <Login />
       <Notification />
+      {user && <Toggable buttonLabel="create note" ref={togglableRef}>
+        <BlogForm togglableRef={togglableRef} />
+      </Toggable>}
       <UsersContext.Provider value={users}>
         <Switch>
           <Route path="/users" exact>
@@ -39,6 +50,9 @@ const App = () => {
           </Route>
           <Route path="/users/:id" exact>
             <User />
+          </Route>
+          <Route path="/blogs" exact>
+            <Blogs blogs={blogs}/>
           </Route>
           <Route path="/blogs/:id" exact>
             <Blog />
