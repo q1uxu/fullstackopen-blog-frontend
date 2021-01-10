@@ -37,6 +37,10 @@ const Blog = () => {
       <div>author: {blog.author}</div>
       <div>add By {blog.user.name} </div>
       { user && blog.user.username === user.username && <button onClick={() => handleDelete(blog)}>delete</button>}
+      <h2>comments</h2>
+      <ul>
+        {blog.comments.map((comment, index) => <li key={index}>{ comment}</li>)}
+      </ul>
     </div>
   );
 };
