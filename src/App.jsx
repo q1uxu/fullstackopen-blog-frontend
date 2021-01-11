@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
 import Toggable from './components/Togglable';
 import BlogForm from './views/blog/BlogForm';
 import Notification from './components/Notification';
@@ -39,6 +40,7 @@ const App = () => {
       <Link to="/users" className="menu-link">users</Link>
       <h1>blogs app</h1>
       <Login />
+      {!user && <SignUp />}
       <Notification />
       {user && <Toggable buttonLabel="create note" ref={togglableRef}>
         <BlogForm togglableRef={togglableRef} />

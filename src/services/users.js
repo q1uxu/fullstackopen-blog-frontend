@@ -11,9 +11,15 @@ const getUser = (id) => {
   return request.then(response => response.data);
 };
 
+const createUser = (user) => {
+  const request = axios.post(baseUrl, user, { 'Content-Type': 'application/json' });
+  return request.then(response => response.data);
+};
+
 const usersService = {
   getAll,
   getUser,
+  createUser,
 };
 
 export default usersService;
