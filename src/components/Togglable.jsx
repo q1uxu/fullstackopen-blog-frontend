@@ -17,7 +17,7 @@ const Togglable = React.forwardRef((props, ref) => {
   if (visible) return (
     <div>
       {props.children}
-      <button onClick={() => setVisible(false)}>cancel</button>
+      <button onClick={() => setVisible(false)}>取消</button>
     </div>
   );
 });

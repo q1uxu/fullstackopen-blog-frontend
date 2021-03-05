@@ -21,19 +21,19 @@ const SignUp = () => {
     <Toggable buttonLabel="signup" ref={togglableRef}>
       <form onSubmit={handleSignUp}>
         <div>
-          <label htmlFor="username">username</label>
+          <label htmlFor="username">用户名</label>
           <input type="text" id="username" name="username" value={username} onChange={e => setUsername(e.target.value)} />
         </div>
         <div>
-          <label htmlFor="fullname">fullname</label>
+          <label htmlFor="fullname">全名</label>
           <input type="text" id="fullname" name="fullname" value={fullname} onChange={e => setFullname(e.target.value)} />
         </div>
         <div>
-          <label htmlFor="password">password</label>
+          <label htmlFor="password">密码</label>
           <input type="password" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)} />
         </div>
         <div>
-          <button>signup</button>
+          <button>注册</button>
         </div>
       </form>
     </Toggable>

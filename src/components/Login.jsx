@@ -33,19 +33,19 @@ const Login = () => {
   if (user === null) {
     return (
       <div>
-        <h2>welcome, please login</h2>
-        <Toggable buttonLabel="login" ref={togglableRef}>
+        <h2>欢迎~请登录</h2>
+        <Toggable buttonLabel="登录" ref={togglableRef}>
           <form onSubmit={handleLogin}>
             <div>
-              <label htmlFor="username">username</label>
+              <label htmlFor="username">用户名</label>
               <input type="text" id="username" name="username" value={username} onChange={e => setUsername(e.target.value)} />
             </div>
             <div>
-              <label htmlFor="password">password</label>
+              <label htmlFor="password">密码</label>
               <input type="password" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <div>
-              <button>login</button>
+              <button>登录</button>
             </div>
           </form>
         </Toggable>
@@ -55,8 +55,8 @@ const Login = () => {
 
   return (
     <div>
-      hello, {user.name}
-      <button onClick={handleLogout}>log out</button>
+      哈喽~ {user.name}
+      <button onClick={handleLogout}>注销</button>
     </div>
   );
 };

@@ -38,16 +38,16 @@ const Blog = () => {
       <h2>{blog.title}</h2>
       <div>{blog.url}</div>
       <div>
-        {blog.likes} likes
-        <button onClick={handleLike}>like</button>
+        {blog.likes} 赞
+        <button onClick={handleLike}>赞</button>
       </div>
-      <div>author: {blog.author}</div>
-      <div>add By {blog.user.name} </div>
-      { user && blog.user.username === user.username && <button onClick={() => handleDelete(blog)}>delete</button>}
-      <h2>comments</h2>
+      <div>作者:  {blog.author}</div>
+      <div>创建者: {blog.user.name} </div>
+      { user && blog.user.username === user.username && <button onClick={() => handleDelete(blog)}>删除</button>}
+      <h2>评论</h2>
       <form onSubmit={event => handleSubmitComment(event)}>
         <input type="text" name="comment" value={newComment} onChange={event => setNewComment(event.target.value) }/>
-        <button type="submit">submit comment</button>
+        <button type="submit">提交评论</button>
       </form>
       <ul>
         {blog.comments.map((comment, index) => <li key={index}>{ comment}</li>)}

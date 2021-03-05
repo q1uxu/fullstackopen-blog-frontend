@@ -7,12 +7,12 @@ const Users = () => {
 
   return (
     <>
-      <h1>Users</h1>
+      <h1>用户</h1>
       <table>
         <thead>
           <tr>
-            <td>name</td>
-            <td>blogs added</td>
+            <td>用户名</td>
+            <td>博文数</td>
           </tr>
         </thead>
         {users.map(user => (

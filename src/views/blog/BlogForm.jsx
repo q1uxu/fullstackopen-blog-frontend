@@ -17,18 +17,18 @@ const BlogForm = (props) => {
     <form onSubmit={handleFormSubmit}>
       <h2>create new</h2>
       <div>
-        <label htmlFor="title">title</label>
+        <label htmlFor="title">标题</label>
         <input type="text" id="title" name="title" value={newBlog.title} onChange={e => setNewBlog({ ...newBlog, title: e.target.value })} />
       </div>
       <div>
-        <label htmlFor="author">author</label>
+        <label htmlFor="author">作者</label>
         <input type="text" id="author" name="author" value={newBlog.author} onChange={e => setNewBlog({ ...newBlog, author: e.target.value })} />
       </div>
       <div>
-        <label htmlFor="url">url</label>
+        <label htmlFor="url">文章原址</label>
         <input type="text" id="url" name="url" value={newBlog.url} onChange={e => setNewBlog({ ...newBlog, url: e.target.value })} />
       </div>
-      <button type="submit">create</button>
+      <button type="submit">添加</button>
     </form>
   );
 };

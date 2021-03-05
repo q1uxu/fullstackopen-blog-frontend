@@ -36,13 +36,13 @@ const App = () => {
 
   return (
     <div className="container">
-      <Link to="/blogs" className="menu-link">blogs</Link>
-      <Link to="/users" className="menu-link">users</Link>
-      <h1>blogs app</h1>
+      <Link to="/blogs" className="menu-link">博客</Link>
+      <Link to="/users" className="menu-link">用户</Link>
+      <h1>博客App</h1>
       <Login />
       {!user && <SignUp />}
       <Notification />
-      {user && <Toggable buttonLabel="create note" ref={togglableRef}>
+      {user && <Toggable buttonLabel="添加文章" ref={togglableRef}>
         <BlogForm togglableRef={togglableRef} />
       </Toggable>}
       <UsersContext.Provider value={users}>

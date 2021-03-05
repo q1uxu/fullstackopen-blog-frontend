@@ -12,14 +12,14 @@ const User = () => {
   const user = users.find(user => user.id === userid);
 
   if (!user) {
-    return <div>no such user</div>;
+    return <div>用户不存在</div>;
   }
 
   if (!blogs || blogs.length === 0) {
     return (
       <div>
         <h2>{user.name}</h2>
-        <div>no blogs added</div>
+        <div>没有博文</div>
       </div>
     );
   }
